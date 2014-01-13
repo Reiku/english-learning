@@ -7,20 +7,20 @@ import java.util.ArrayList;
 public class Serveur implements Runnable{
 	private int port;
 	private ServerSocket ss;
-	private ArrayList<ServeurClient> clients;
+	private ArrayList<ClientThread> clients;
 	private int nbClients;
 	
 	public Serveur(int p){
 		try {
 			port = p;
-			clients = new ArrayList<ServeurClient>();
+			clients = new ArrayList<ClientThread>();
 			nbClients = 0;
 			ss = new ServerSocket(port);
 			System.out.println("--------");
 	        System.out.println("Serveur démarré sur le port " + port);
 	        System.out.println("--------");
 		} catch (IOException e) {
-			System.out.println("[Erreur] : " + e);
+			System.err.println("[Erreur] " + e);
 		}
 	}
 	
@@ -28,32 +28,32 @@ public class Serveur implements Runnable{
 		try {
 			while(true){
 				try {
-					this.addClient(new ServeurClient(ss.accept(), this));
+					this.addClient(new ClientThread(ss.accept(), this));
 				} catch (IOException e) {
-					System.out.println("[Erreur] : " + e);
+					System.err.println("[Erreur] " + e);
 				}
 			}
 		} finally {
 			try {
 				ss.close();
 			} catch (IOException e) {
-				System.out.println("[Erreur] : " + e);
+				System.err.println("[Erreur] " + e);
 			}
 		}
 	}
 	
-	synchronized public void addClient(ServeurClient client){
+	synchronized public void addClient(ClientThread client){
 		nbClients++;
 		clients.add(client);
 	}
 	
-	synchronized public void delClient(ServeurClient client){
+	synchronized public void delClient(ClientThread client){
 		nbClients--;
 		clients.remove(client);
 	}
 	
 	synchronized public void sendAll(String data){
-		for(ServeurClient client : clients){
+		for(ClientThread client : clients){
 			client.send(data);
 		}
 	}

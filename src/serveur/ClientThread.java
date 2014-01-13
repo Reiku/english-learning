@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServeurClient implements Runnable {
+public class ClientThread implements Runnable {
 	private final String REGEXP_SEP = "\\|~\\|";
 	private final String SEP = "|~|";
 	private Socket sock;
@@ -16,14 +16,14 @@ public class ServeurClient implements Runnable {
 	private BufferedReader in;
 	private PrintWriter out;
 	
-	public ServeurClient(Socket socket, Serveur serveur){
+	public ClientThread(Socket socket, Serveur serveur){
 		try {
 			sock = socket;
 			serv = serveur;
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
 		} catch (IOException e) {
-			System.out.println("[Erreur] : " + e);
+			System.err.println("[Erreur] " + e);
 		} finally {
 			new Thread(this).start();
 		}
@@ -50,19 +50,19 @@ public class ServeurClient implements Runnable {
 						break;
 					default:
 						//this.send("packetError");
-						System.out.println("[Erreur] Packet inconnu : " + data[0]);
+						System.err.println("[Erreur] Packet inconnu : " + data[0]);
 				}
 				packet = in.readLine();
 			}
 		} catch (IOException e) {
-			System.out.println("[Erreur] : " + e);
+			System.err.println("[Erreur] " + e);
 		} finally {
 			try {
 				in.close();
 				out.close();
 				sock.close();
 			} catch (IOException e) {
-				System.out.println("[Erreur] : " + e);
+				System.err.println("[Erreur] " + e);
 			} finally {
 				serv.delClient(this);
 			}
