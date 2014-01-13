@@ -1,4 +1,4 @@
-package serveur;
+package client;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,22 +8,20 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientThread implements Runnable {
+public class ClientSocket implements Runnable {
 	private final String REGEXP_SEP = "\\|~\\|";
 	private final String SEP = "|~|";
 	private Socket sock;
-	private Serveur serv;
 	private BufferedReader in;
 	private PrintWriter out;
 	private boolean logout;
 	
-	public ClientThread(Socket socket, Serveur serveur){
+	public ClientSocket(String ip, int port){
 		try {
-			sock = socket;
-			serv = serveur;
+			sock = new Socket(ip, port);
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
-			logout = true;
+			logout = false;
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
 		} finally {
@@ -43,11 +41,11 @@ public class ClientThread implements Runnable {
 				switch(data[0]) {
 					case "login":
 						// Login code
-						this.send("login");
+						//this.send("login");
 						break;
 					case "logout":
 						// Logout code
-						this.send("logout");
+						logout = true;
 						break;
 					default:
 						//this.send("packetError");
@@ -61,16 +59,16 @@ public class ClientThread implements Runnable {
 				in.close();
 				out.close();
 				sock.close();
+				System.exit(0);
 			} catch (IOException e) {
 				System.err.println("[Erreur] " + e);
-			} finally {
-				serv.delClient(this);
 			}
 		}
 	}
-	
+
 	public void send(String data){
 		out.println(data + SEP);
 		System.out.println("[DataWrite] Packet : " + data + SEP);
 	}
+
 }

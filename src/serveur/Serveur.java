@@ -8,17 +8,13 @@ public class Serveur implements Runnable{
 	private int port;
 	private ServerSocket ss;
 	private ArrayList<ClientThread> clients;
-	private int nbClients;
 	
 	public Serveur(int p){
 		try {
 			port = p;
 			clients = new ArrayList<ClientThread>();
-			nbClients = 0;
 			ss = new ServerSocket(port);
-			System.out.println("--------");
-	        System.out.println("Serveur démarré sur le port " + port);
-	        System.out.println("--------");
+	        System.out.println("[Serveur] Démarré sur le port " + port);
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
 		}
@@ -43,12 +39,12 @@ public class Serveur implements Runnable{
 	}
 	
 	synchronized public void addClient(ClientThread client){
-		nbClients++;
+		System.out.println("[Serveur] Un client c'est connecté");
 		clients.add(client);
 	}
 	
 	synchronized public void delClient(ClientThread client){
-		nbClients--;
+		System.out.println("[Serveur] Un client c'est déconnecté");
 		clients.remove(client);
 	}
 	
@@ -60,10 +56,6 @@ public class Serveur implements Runnable{
 	
 	public static void main(String[] args){
 		new Thread(new Serveur(3829)).start();
-	}
-
-	public int getNbClients() {
-		return nbClients;
 	}
 
 }
