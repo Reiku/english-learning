@@ -28,8 +28,7 @@ public class Serveur implements Runnable{
 		try {
 			while(true){
 				try {
-					new ServeurClient(ss.accept(), this);
-					//System.out.println("Client " + nbClients + " connécté !");
+					this.addClient(new ServeurClient(ss.accept(), this));
 				} catch (IOException e) {
 					System.out.println("[Erreur] : " + e);
 				}
@@ -62,4 +61,9 @@ public class Serveur implements Runnable{
 	public static void main(String[] args){
 		new Thread(new Serveur(3829)).start();
 	}
+
+	public int getNbClients() {
+		return nbClients;
+	}
+
 }

@@ -22,11 +22,11 @@ public class ServeurClient implements Runnable {
 			serv = serveur;
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
-			serv.addClient(this);
 		} catch (IOException e) {
 			System.out.println("[Erreur] : " + e);
+		} finally {
+			new Thread(this).start();
 		}
-		new Thread(this).start();
 	}
 	
 	public void run() {
@@ -35,7 +35,7 @@ public class ServeurClient implements Runnable {
         
 		try {
 			packet = in.readLine();
-			System.out.println("Packet : " + packet);
+			System.out.println("[DataRead] Packet : " + packet);
 			while(packet != null){
 				data = packet.split(REGEXP_SEP);
 				System.out.println(packet);
@@ -45,8 +45,8 @@ public class ServeurClient implements Runnable {
 						//this.send("login");
 						break;
 					case "logout":
-						this.send("logout");
 						// Logout code
+						//this.send("logout");
 						break;
 					default:
 						//this.send("packetError");
@@ -57,11 +57,20 @@ public class ServeurClient implements Runnable {
 		} catch (IOException e) {
 			System.out.println("[Erreur] : " + e);
 		} finally {
-			serv.delClient(this);
+			try {
+				in.close();
+				out.close();
+				sock.close();
+			} catch (IOException e) {
+				System.out.println("[Erreur] : " + e);
+			} finally {
+				serv.delClient(this);
+			}
 		}
 	}
 	
 	public void send(String data){
 		out.println(data + SEP);
+		System.out.println("[DataWrite] Packet : " + data);
 	}
 }
