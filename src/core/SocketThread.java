@@ -1,4 +1,4 @@
-package client;
+package core;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,18 +8,19 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientSocket implements Runnable {
-	private final String REGEXP_SEP = "\\|~\\|";
-	private final String SEP = "|~|";
+public abstract class SocketThread implements Runnable {
+	protected final String REGEXP_SEP = "\\|~\\|";
+	protected final String SEP = "|~|";
 	private Socket sock;
 	private BufferedReader in;
 	private PrintWriter out;
+	private boolean stop;
 	
-	public ClientSocket(String ip, int port){
+	private void init(){
 		try {
-			sock = new Socket(ip, port);
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
+			stop = false;
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
 		} finally {
@@ -27,28 +28,28 @@ public class ClientSocket implements Runnable {
 		}
 	}
 	
+	public SocketThread(Socket socket){
+		sock = socket;
+		this.init();
+	}
+	
+	public SocketThread(String ip, int port){
+		try {
+			sock = new Socket(ip, port);
+		} catch (IOException e) {
+			System.err.println("[Erreur] " + e);
+		} finally {
+			this.init();
+		}
+	}
+	
 	public void run() {
 		String packet = "";
-		String[] data;
         
 		try {
-			while(packet != null){
+			while(packet != null && !stop){
 				packet = in.readLine();
-				data = packet.split(REGEXP_SEP);
-				System.out.println("[DataRead] Packet : " + packet);
-				switch(data[0]) {
-					case "login":
-						// Login code
-						//this.send("login");
-						break;
-					case "logout":
-						// Logout code
-						packet = null;
-						break;
-					default:
-						//this.send("packetError");
-						System.err.println("[Erreur] Packet inconnu : " + data[0]);
-				}
+				this.dataProcessing(packet);
 			}
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
@@ -57,7 +58,6 @@ public class ClientSocket implements Runnable {
 				in.close();
 				out.close();
 				sock.close();
-				System.exit(0);
 			} catch (IOException e) {
 				System.err.println("[Erreur] " + e);
 			}
@@ -65,8 +65,13 @@ public class ClientSocket implements Runnable {
 	}
 
 	public void send(String data){
-		out.println(data + SEP);
 		System.out.println("[DataWrite] Packet : " + data + SEP);
+		out.println(data + SEP);
 	}
-
+	
+	protected void stop(){
+		stop = true;
+	}
+	
+	protected abstract void dataProcessing(String packet);
 }

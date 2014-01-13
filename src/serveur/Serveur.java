@@ -7,12 +7,12 @@ import java.util.ArrayList;
 public class Serveur implements Runnable{
 	private int port;
 	private ServerSocket ss;
-	private ArrayList<ClientThread> clients;
+	private ArrayList<Client> clients;
 	
 	public Serveur(int p){
 		try {
 			port = p;
-			clients = new ArrayList<ClientThread>();
+			clients = new ArrayList<Client>();
 			ss = new ServerSocket(port);
 	        System.out.println("[Serveur] Démarré sur le port " + port);
 		} catch (IOException e) {
@@ -24,7 +24,7 @@ public class Serveur implements Runnable{
 		try {
 			while(true){
 				try {
-					this.addClient(new ClientThread(ss.accept(), this));
+					this.addClient(new Client(ss.accept(), this));
 				} catch (IOException e) {
 					System.err.println("[Erreur] " + e);
 				}
@@ -38,18 +38,18 @@ public class Serveur implements Runnable{
 		}
 	}
 	
-	synchronized public void addClient(ClientThread client){
+	synchronized public void addClient(Client client){
 		System.out.println("[Serveur] Un client c'est connecté");
 		clients.add(client);
 	}
 	
-	synchronized public void delClient(ClientThread client){
+	synchronized public void delClient(Client client){
 		System.out.println("[Serveur] Un client c'est déconnecté");
 		clients.remove(client);
 	}
 	
 	synchronized public void sendAll(String data){
-		for(ClientThread client : clients){
+		for(Client client : clients){
 			client.send(data);
 		}
 	}
