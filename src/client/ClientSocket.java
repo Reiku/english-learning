@@ -14,14 +14,12 @@ public class ClientSocket implements Runnable {
 	private Socket sock;
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean logout;
 	
 	public ClientSocket(String ip, int port){
 		try {
 			sock = new Socket(ip, port);
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
-			logout = false;
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
 		} finally {
@@ -34,7 +32,7 @@ public class ClientSocket implements Runnable {
 		String[] data;
         
 		try {
-			while(packet != null && !logout){
+			while(packet != null){
 				packet = in.readLine();
 				data = packet.split(REGEXP_SEP);
 				System.out.println("[DataRead] Packet : " + packet);
@@ -45,7 +43,7 @@ public class ClientSocket implements Runnable {
 						break;
 					case "logout":
 						// Logout code
-						logout = true;
+						packet = null;
 						break;
 					default:
 						//this.send("packetError");

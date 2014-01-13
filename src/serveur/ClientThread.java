@@ -15,7 +15,6 @@ public class ClientThread implements Runnable {
 	private Serveur serv;
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean logout;
 	
 	public ClientThread(Socket socket, Serveur serveur){
 		try {
@@ -23,7 +22,6 @@ public class ClientThread implements Runnable {
 			serv = serveur;
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
-			logout = true;
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
 		} finally {
@@ -36,7 +34,7 @@ public class ClientThread implements Runnable {
 		String[] data;
         
 		try {
-			while(packet != null && !logout){
+			while(packet != null){
 				packet = in.readLine();
 				data = packet.split(REGEXP_SEP);
 				System.out.println("[DataRead] Packet : " + packet);
@@ -48,9 +46,10 @@ public class ClientThread implements Runnable {
 					case "logout":
 						// Logout code
 						this.send("logout");
+						packet = null;
 						break;
 					default:
-						//this.send("packetError");
+						this.send("packetError");
 						System.err.println("[Erreur] Packet inconnu : " + data[0]);
 				}
 			}
