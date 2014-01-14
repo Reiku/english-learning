@@ -74,4 +74,5 @@ public abstract class SocketThread implements Runnable {
 	}
 	
 	protected abstract void dataProcessing(String packet);
+	
 }
