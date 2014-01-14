@@ -48,9 +48,9 @@ public class Serveur implements Runnable{
 		clients.remove(client);
 	}
 	
-	synchronized public void sendAll(String data){
+	synchronized public void sendAll(String name, Object data){
 		for(Client client : clients){
-			client.send(data);
+			client.send(name, data);
 		}
 	}
 	

@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+
 public abstract class SocketThread implements Runnable {
 	protected final String REGEXP_SEP = "\\|~\\|";
 	protected final String SEP = "|~|";
@@ -44,11 +45,13 @@ public abstract class SocketThread implements Runnable {
 	}
 	
 	public void run() {
-		String packet = "";
+		String data = "";
+		Packet packet;
         
 		try {
-			while(packet != null && !stop){
-				packet = in.readLine();
+			while(data != null && !stop){
+				data = in.readLine();
+				packet = new Packet(data);
 				this.dataProcessing(packet);
 			}
 		} catch (IOException e) {
@@ -63,16 +66,22 @@ public abstract class SocketThread implements Runnable {
 			}
 		}
 	}
-
-	public void send(String data){
-		System.out.println("[DataWrite] Packet : " + data + SEP);
-		out.println(data + SEP);
+	
+	public void send(String name){
+		this.send(name, null);
+	}
+	
+	public void send(String name, Object data){
+		Packet packet = new Packet(name, data);
+		out.println(packet);
+		System.out.println("[DataWrite] Packet : " + packet);
+		
 	}
 	
 	protected void stop(){
 		stop = true;
 	}
 	
-	protected abstract void dataProcessing(String packet);
+	protected abstract void dataProcessing(Packet packet);
 	
 }

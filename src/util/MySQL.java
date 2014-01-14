@@ -10,18 +10,16 @@ public class MySQL {
     private Statement instruction;
     
     public MySQL(String host, String db, String user, String password){
-        try{
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            Connection connexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + db, user, password);
-            instruction = connexion.createStatement();
-        }
-        catch (Exception e) {
-            System.err.println("Connexion ра MySQL impossible.");
-        }
+	    try{
+	        Class.forName("com.mysql.jdbc.Driver").newInstance();
+	        Connection connexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + db, user, password);
+	        instruction = connexion.createStatement();
+	    } catch (Exception e) {
+	        System.err.println("Connexion р MySQL impossible.");
+	    }
     }
     
-    public ResultSet Query(String query) throws SQLException{
-        ResultSet resultat = instruction.executeQuery(query);
-        return resultat;
+    public ResultSet query(String query) throws SQLException{
+    	return instruction.executeQuery(query);
     }
 }

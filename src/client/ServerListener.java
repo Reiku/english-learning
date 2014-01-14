@@ -1,5 +1,6 @@
 package client;
 
+import core.Packet;
 import core.SocketThread;
 
 public class ServerListener extends SocketThread {
@@ -13,15 +14,14 @@ public class ServerListener extends SocketThread {
 		System.exit(0);
 	}
 	
-	protected void dataProcessing(String packet){
+	protected void dataProcessing(Packet packet){
 		System.out.println("[DataRead] Packet : " + packet);
-		String[] data = packet.split(REGEXP_SEP);
-		switch(data[0]) {
+		/*switch(data[0]) {
 			case "logout":
 				// Logout code
 				this.stop();
 				break;
-		}
+		}*/
 	}
 
 }
