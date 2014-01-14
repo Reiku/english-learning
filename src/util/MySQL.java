@@ -15,7 +15,7 @@ public class MySQL {
 	        Connection connexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + db, user, password);
 	        instruction = connexion.createStatement();
 	    } catch (Exception e) {
-	        System.err.println("Connexion à MySQL impossible.");
+	        System.err.println("[Erreur] " + e);
 	    }
     }
     

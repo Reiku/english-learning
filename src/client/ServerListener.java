@@ -16,12 +16,17 @@ public class ServerListener extends SocketThread {
 	
 	protected void dataProcessing(Packet packet){
 		System.out.println("[DataRead] Packet : " + packet);
-		/*switch(data[0]) {
+		switch(packet.getName()) {
+			case "loginOk":
+				System.out.println("LOGIN OK !");
+				break;
+			case "loginFail":
+				System.out.println("LOGIN FAIL !");
+				break;
 			case "logout":
-				// Logout code
 				this.stop();
 				break;
-		}*/
+		}
 	}
 
 }

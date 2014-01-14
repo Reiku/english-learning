@@ -4,16 +4,20 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
+import util.MySQL;
+
 public class Serveur implements Runnable{
 	private int port;
 	private ServerSocket ss;
 	private ArrayList<Client> clients;
+	private MySQL db;
 	
 	public Serveur(int p){
 		try {
 			port = p;
 			clients = new ArrayList<Client>();
 			ss = new ServerSocket(port);
+			db = new MySQL("62.210.243.12", "projet", "projet", "V5wS2mR7zwD6z3NP");
 	        System.out.println("[Serveur] Démarré sur le port " + port);
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
@@ -24,7 +28,7 @@ public class Serveur implements Runnable{
 		try {
 			while(true){
 				try {
-					this.addClient(new Client(ss.accept(), this));
+					this.addClient(new Client(ss.accept(), this, db));
 				} catch (IOException e) {
 					System.err.println("[Erreur] " + e);
 				}

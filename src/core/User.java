@@ -4,12 +4,28 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = -800238617589219099L;
-	public String login;
-	public String password;
+	private String login;
+	private String password;
 	
 	public User(String log, String pass){
-		login = log;
-		password = pass;
+		setLogin(log);
+		setPassword(pass);
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 	
 }
