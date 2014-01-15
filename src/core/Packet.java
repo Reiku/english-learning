@@ -34,7 +34,7 @@ public class Packet {
 			ByteArrayInputStream buffer = new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(data));
 			ObjectInputStream ois = new ObjectInputStream(buffer);
 			obj = ois.readObject();
-	    } catch (java.io.IOException e) {
+	    } catch (IOException e) {
 	    	System.err.println("[Erreur] " + e);
 	    } catch (ClassNotFoundException e) {
 	    	System.err.println("[Erreur] " + e);

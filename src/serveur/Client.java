@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import util.MySQL;
 
+import core.File;
 import core.Packet;
 import core.SocketThread;
 import core.User;
@@ -31,13 +32,17 @@ public class Client extends SocketThread {
 			case "login":
 				this.login((User)packet.getData());
 				break;
+			case "file":
+				File file = (File)packet.getData();
+				file.save("res2");
+				break;
 			case "logout":
 				// Logout code
 				//this.send("logout");
 				this.stop();
 				break;
 			default:
-				//this.send("packetError");
+				this.send("packetError");
 				System.err.println("[Erreur] Packet inconnu : " + packet.getName());
 		}
 	}
