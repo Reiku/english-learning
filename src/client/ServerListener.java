@@ -15,7 +15,7 @@ public class ServerListener extends SocketThread {
 	}
 	
 	protected void dataProcessing(Packet packet){
-		System.out.println("[DataRead] Packet : " + packet);
+		System.out.println("[DataRead] Packet : " + packet.toShortString());
 		switch(packet.getName()) {
 			case "loginOk":
 				System.out.println("LOGIN OK !");

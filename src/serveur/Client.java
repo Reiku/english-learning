@@ -27,7 +27,7 @@ public class Client extends SocketThread {
 	}
 	
 	protected void dataProcessing(Packet packet){
-		System.out.println("[DataRead] Packet : " + packet);
+		System.out.println("[DataRead] Packet : " + packet.toShortString());
 		switch(packet.getName()) {
 			case "login":
 				this.login((User)packet.getData());
@@ -35,6 +35,7 @@ public class Client extends SocketThread {
 			case "file":
 				File file = (File)packet.getData();
 				file.save("res2");
+				this.send("fileSaved");
 				break;
 			case "logout":
 				// Logout code

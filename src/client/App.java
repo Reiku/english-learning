@@ -8,11 +8,11 @@ public class App {
 	
 	public static void main(String[] args){
 		ServerListener socket = new ServerListener("127.0.0.1", 3829);
-		@SuppressWarnings("unused")
 		User user = new User("lagetj", MD5.getHashString("test"));
 		File file = new File("res/english.jpg");
 		
 		socket.send("file", file);
+		//socket.send("login", user);
 		
 		/*Scanner sc = new Scanner(System.in);
 		String str = sc.nextLine();

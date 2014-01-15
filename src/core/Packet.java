@@ -60,4 +60,12 @@ public class Packet {
 		return name + "|~|" + data;
 	}
 	
+	public String toShortString(){
+		if(data.length() <= 100){
+			return name + "|~|" + data;
+		} else {
+			return name + "|~|" + data.substring(0, 100);
+		}
+	}
+	
 }

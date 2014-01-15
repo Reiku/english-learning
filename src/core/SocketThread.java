@@ -74,7 +74,7 @@ public abstract class SocketThread implements Runnable {
 	public void send(String name, Object data){
 		Packet packet = new Packet(name, data);
 		out.println(packet);
-		System.out.println("[DataWrite] Packet : " + packet);
+		System.out.println("[DataWrite] Packet : " + packet.toShortString());
 		
 	}
 	
