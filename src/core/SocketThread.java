@@ -49,6 +49,7 @@ public abstract class SocketThread implements Runnable {
 		Packet packet;
         
 		try {
+			
 			while(data != null && !stop){
 				data = in.readLine();
 				packet = new Packet(data);
@@ -72,10 +73,11 @@ public abstract class SocketThread implements Runnable {
 	}
 	
 	public void send(String name, Object data){
+		long start = System.currentTimeMillis();
 		Packet packet = new Packet(name, data);
 		out.println(packet);
-		System.out.println("[DataWrite] Packet : " + packet.toShortString());
-		
+		System.out.print("[DataWrite] Packet : " + packet.toShortString());
+		System.out.print(" envoyé en " + (System.currentTimeMillis() - start)/1000f + "sec\n");
 	}
 	
 	protected void stop(){

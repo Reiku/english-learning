@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
-@SuppressWarnings("unused")
 public class File implements Serializable {
 	private static final long serialVersionUID = -6744283352855627343L;
 	private String filename;
@@ -13,9 +12,9 @@ public class File implements Serializable {
 	
 	@SuppressWarnings("resource")
 	public File(String filepath){
+		long start = System.currentTimeMillis();
 		try {
 			java.io.File file = new java.io.File(filepath);
-			
 			FileInputStream fis = new FileInputStream(file);
 			filename = file.getName();
 	        data = new byte[fis.available()];
@@ -30,9 +29,11 @@ public class File implements Serializable {
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
 		}
+		System.out.println("Lecture en " + (System.currentTimeMillis() - start)/1000f+" sec");
 	}
 	
 	public void save(String folder){
+		long start = System.currentTimeMillis();
 		try {
 			FileOutputStream fos = new FileOutputStream(folder + "/" + filename);
 			fos.write(data);
@@ -47,5 +48,6 @@ public class File implements Serializable {
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
 		}
+		System.out.println("Ecriture en " + (System.currentTimeMillis() - start)/1000f+" sec");
 	}
 }

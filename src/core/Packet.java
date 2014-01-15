@@ -39,7 +39,6 @@ public class Packet {
 	    } catch (ClassNotFoundException e) {
 	    	System.err.println("[Erreur] " + e);
 	    }
-		
 		return obj;
 	}
 
