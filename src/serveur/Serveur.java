@@ -1,24 +1,26 @@
 package serveur;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import util.MySQL;
 
 public class Serveur implements Runnable{
-	private int port;
 	private ServerSocket ss;
 	private ArrayList<Client> clients;
 	private MySQL db;
 	
-	public Serveur(int p){
-		try {
-			port = p;
+	public Serveur(){
+    	try {
+    		Properties properties = new Properties();
+    		properties.load(new FileInputStream("config.properties"));
 			clients = new ArrayList<Client>();
-			ss = new ServerSocket(port);
-			db = new MySQL("62.210.243.12", "projet", "projet", "V5wS2mR7zwD6z3NP");
-	        System.out.println("[Serveur] Démarré sur le port " + port);
+			ss = new ServerSocket(Integer.valueOf(properties.getProperty("serverport")));
+			db = new MySQL(properties.getProperty("dbhost"), properties.getProperty("dbname"), properties.getProperty("dbuser"), properties.getProperty("dbpassword"));
+	        System.out.println("[Serveur] Démarré sur le port " + properties.getProperty("serverport"));
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
 		}
@@ -59,7 +61,7 @@ public class Serveur implements Runnable{
 	}
 	
 	public static void main(String[] args){
-		new Thread(new Serveur(3829)).start();
+		new Thread(new Serveur()).start();
 	}
 
 }
