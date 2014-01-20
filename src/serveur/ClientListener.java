@@ -6,16 +6,16 @@ import java.sql.SQLException;
 
 import util.MySQL;
 
-import core.File;
+import core.Image;
 import core.Packet;
 import core.SocketThread;
 import core.User;
 
-public class Client extends SocketThread {
+public class ClientListener extends SocketThread {
 	private Serveur serv;
 	private MySQL db;
 	
-	public Client(Socket socket, Serveur serveur, MySQL mysql) {
+	public ClientListener(Socket socket, Serveur serveur, MySQL mysql) {
 		super(socket);
 		serv = serveur;
 		db = mysql;
@@ -33,13 +33,12 @@ public class Client extends SocketThread {
 				this.login((User)packet.getData());
 				break;
 			case "file":
-				File file = (File)packet.getData();
+				Image file = (Image)packet.getData();
 				file.save("res2");
 				this.send("fileSaved");
 				break;
 			case "logout":
-				// Logout code
-				//this.send("logout");
+				this.send("logout");
 				this.stop();
 				break;
 			default:
@@ -51,7 +50,7 @@ public class Client extends SocketThread {
 	private void login(User user){
 		try {
 			ResultSet query = db.query(
-				"SELECT * FROM users WHERE LOWER(login) = '" + user.getLogin() + "' AND password = '" + user.getPassword() + "';"
+				"SELECT * FROM users WHERE LOWER(login) = '" + user.getLogin().toLowerCase() + "' AND password = '" + user.getPassword() + "';"
 			);
 			if(query.next() && query.getRow() > 0){
 				this.send("loginOk");

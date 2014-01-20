@@ -1,28 +1,15 @@
 package client;
 
-import util.MD5;
-import core.File;
-import core.User;
+import client.controller.LoginController;
+import client.view.Login;
 
 public class App {
+	public static ServerListener socket;
 	
 	public static void main(String[] args){
-		ServerListener socket = new ServerListener("127.0.0.1", 3829);
-		User user = new User("lagetj", MD5.getHashString("test"));
-		File file = new File("D:/OBS/Broadcast.mp4");
-		//File file = new File("res/english.jpg");
-		
-		socket.send("file", file);
-		//socket.send("login", user);
-		
-		/*Scanner sc = new Scanner(System.in);
-		String str = sc.nextLine();
-		
-		while(!str.equals("quit")){
-			System.out.println("[Scanner] " + str);
-			socket.send(str);
-			str = sc.nextLine();
-		}*/
+		socket = new ServerListener("81.251.232.69", 3829);
+		LoginController loginController = new LoginController(socket);
+		Login login = new Login(loginController);
+		socket.setObserver(login);
 	}
-	
 }
