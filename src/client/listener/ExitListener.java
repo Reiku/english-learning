@@ -1,10 +1,12 @@
-package client;
+package client.listener;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JOptionPane;
+
+import client.App;
 
 public class ExitListener {
 	public static WindowListener EXIT = new WindowAdapter() {

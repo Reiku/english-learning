@@ -1,8 +1,9 @@
 package client.controller;
 
+import common.User;
+
 import util.MD5;
-import client.ServerListener;
-import core.User;
+import client.listener.ServerListener;
 
 public class LoginController extends AppController {
 

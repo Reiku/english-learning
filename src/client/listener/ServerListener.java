@@ -1,13 +1,14 @@
-package client;
+package client.listener;
 
 import javax.swing.JOptionPane;
+
+import common.Packet;
+import common.SocketThread;
 
 import client.controller.LoginController;
 import client.observer.Observable;
 import client.observer.Observer;
 import client.view.Login;
-import core.Packet;
-import core.SocketThread;
 
 public class ServerListener extends SocketThread implements Observable {
 	private Observer observer;

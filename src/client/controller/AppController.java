@@ -1,6 +1,6 @@
 package client.controller;
 
-import client.ServerListener;
+import client.listener.ServerListener;
 
 public abstract class AppController {
 	protected ServerListener model;

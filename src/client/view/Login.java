@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import client.ExitListener;
 import client.controller.LoginController;
+import client.listener.ExitListener;
 import client.observer.Observer;
 
 public class Login extends JFrame implements Observer {
