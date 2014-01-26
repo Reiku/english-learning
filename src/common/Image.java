@@ -37,4 +37,8 @@ public class Image implements Serializable {
 		}
 		System.out.println("Ecriture en " + (System.currentTimeMillis() - start)/1000f+" sec");
 	}
+	
+	public byte[] getImage(){
+		return data;
+	}
 }

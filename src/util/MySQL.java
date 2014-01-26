@@ -22,4 +22,8 @@ public class MySQL {
     public ResultSet query(String query) throws SQLException{
     	return instruction.executeQuery(query);
     }
+    
+    public boolean execute(String query) throws SQLException{
+    	return instruction.execute(query);
+    }
 }

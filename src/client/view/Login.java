@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import client.controller.LoginController;
 import client.listener.ExitListener;
@@ -27,8 +28,9 @@ public class Login extends JFrame implements Observer {
 	
 
 	public Login(LoginController controller){
-		this.setSize(800, 600);
-		this.setTitle("English Learning");
+		this.setSize(400, 200);
+		this.setTitle("Connexion - English Learning");
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(ExitListener.EXIT);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -64,6 +66,7 @@ public class Login extends JFrame implements Observer {
 				}
 			} 
 		});
+		this.getRootPane().setDefaultButton(loginButton);
 		
 		panLogin.add(loginLabel);
 		panLogin.add(loginField);

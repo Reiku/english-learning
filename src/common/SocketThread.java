@@ -8,6 +8,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 
 public abstract class SocketThread implements Runnable {
 	protected final String REGEXP_SEP = "\\|~\\|";
@@ -39,6 +42,8 @@ public abstract class SocketThread implements Runnable {
 			sock = new Socket(ip, port);
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
+			JOptionPane.showMessageDialog(new JFrame(), "Impossible de se connecter au serveur", "Connexion impossible", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		} finally {
 			this.init();
 		}
