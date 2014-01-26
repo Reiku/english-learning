@@ -11,6 +11,11 @@ public class Dictee extends Exercise {
 		this.phrase = phrase;
 	}
 	
+	public Dictee(String phrase){
+		super(0);
+		this.phrase = phrase;
+	}
+	
 	public String getName(){
 		return "Dictée exercice " + dictee_id;
 	}

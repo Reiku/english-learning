@@ -6,12 +6,14 @@ import java.util.regex.Pattern;
 public class Trous extends Exercise {
 	private static final long serialVersionUID = -8738599732877773920L;
 	private int trous_id;
+	private String texte;
 	public String[] sentence;
 	public String[] words;
 	
 	public Trous(int exercise_id, int trous_id, String texte){
 		super(exercise_id);
 		this.trous_id = trous_id;
+		this.texte = texte;
 		
 		Pattern p = Pattern.compile("\\[(.*?)\\]");
 		Matcher m1 = p.matcher(texte);
@@ -25,6 +27,11 @@ public class Trous extends Exercise {
 		    words[x] = m2.group(1);
 		    x++;
 		}
+	}
+	
+	public Trous(String texte){
+		super(0);
+		this.texte = texte;
 	}
 	
 	public String getName(){
@@ -45,6 +52,10 @@ public class Trous extends Exercise {
 
 	public int getId() {
 		return trous_id;
+	}
+
+	public String getTexte() {
+		return texte;
 	}
 
 }

@@ -60,14 +60,14 @@ public class Home extends JFrame implements Observer {
 		homePanel.setPreferredSize(new Dimension(150, 125));
 		//panHome.setBackground(Color.WHITE);
 		
-		JButton imgButton = new JButton("Images et sens");
+		JButton imgButton = new JButton("Images & sens");
 		imgButton.setPreferredSize(new Dimension(125, 25));
 		imgButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
 				controller.imageSens();
 			} 
 		});
-		JButton textButton = new JButton("Texte à trous");
+		JButton textButton = new JButton("Textes à trous");
 		textButton.setPreferredSize(new Dimension(125, 25));
 		textButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 

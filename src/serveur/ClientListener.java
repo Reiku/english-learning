@@ -59,6 +59,22 @@ public class ClientListener extends SocketThread {
 			case "saveNote":
 				this.saveNote((Note)packet.getData());
 				break;
+			case "addUser":
+				if(user.isProf())
+					this.addUser((User)packet.getData());
+				break;
+			case "addSens":
+				if(user.isProf())
+					this.addSens((Sens)packet.getData());
+				break;
+			case "addTrous":
+				if(user.isProf())
+					this.addTrous((Trous)packet.getData());
+				break;
+			case "addDictee":
+				if(user.isProf())
+					this.addDictee((Dictee)packet.getData());
+				break;
 			default:
 				this.send("packetError");
 				System.err.println("[Erreur] Packet inconnu : " + packet.getName());
@@ -180,6 +196,81 @@ public class ClientListener extends SocketThread {
             			"VALUES ('" + user.getId() + "', '" + note.getExercise_id() + "', '" + note.getNote() + "');"
             	);
             }
+			this.send("saveNoteOk");
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+	}
+	
+	private void addUser(User user){
+		try {
+			ResultSet query = db.query(
+				"SELECT * FROM users WHERE login = '" + user.getLogin() + "';"
+			);
+
+			if(query.first()){
+				this.send("addUserErrorExist");
+            } else{
+            	db.execute(
+            			"INSERT INTO users (login, password, prof) " +
+            			"VALUES ('" + user.getLogin() + "', '" + user.getPassword() + "', false);"
+            	);
+            	this.send("addUserOk");
+            }
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+	}
+	
+	private int createExercise(){
+		int id = 0;
+		try {
+			db.execute("INSERT INTO exercises (id) VALUES (null);");
+			ResultSet query = db.query("SELECT id FROM exercises ORDER BY id DESC LIMIT 1");
+			if(query.first()){
+				id = query.getInt("id");
+	        }
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+		return id;
+	}
+	
+	private void addSens(Sens exercise){
+		try {
+			int exercise_id = this.createExercise();
+			String imagepath = exercise.image.save("res");
+        	db.execute(
+        			"INSERT INTO sens (exercise_id, mot, imagepath) " +
+        			"VALUES ('" + exercise_id + "', '" + exercise.getMot() + "', '" + imagepath + "');"
+        	);
+        	this.send("addSensOk");
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+	}
+	
+	private void addTrous(Trous exercise){
+		try {
+			int exercise_id = this.createExercise();
+        	db.execute(
+        			"INSERT INTO trous (exercise_id, texte) " +
+        			"VALUES ('" + exercise_id + "', '" + exercise.getTexte() + "');"
+        	);
+        	this.send("addTrousOk");
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+	}
+	
+	private void addDictee(Dictee exercise){
+		try {
+			int exercise_id = this.createExercise();
+        	db.execute(
+        			"INSERT INTO dictees (exercise_id, texte) " +
+        			"VALUES ('" + exercise_id + "', '" + exercise.getPhrase() + "');"
+        	);
+        	this.send("addDicteeOk");
 		} catch (SQLException e) {
 			System.err.println("[Erreur] " + e);
 		}

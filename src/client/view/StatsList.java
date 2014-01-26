@@ -89,7 +89,7 @@ public class StatsList extends JFrame implements Observer {
 			} else if(key.equals("dictees")){
 				title = "Dictées";
 			}
-			tabbedPane.addTab(title, null, scrollPane);
+			tabbedPane.addTab(title, scrollPane);
 		}
 		
 		GridBagConstraints gbc = new GridBagConstraints();

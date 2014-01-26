@@ -132,6 +132,7 @@ public class SolveExercise extends JFrame implements Observer {
 			exoPanel.add(label);
 			
 			proposition = new JTextArea();
+			proposition.setLineWrap(true);
 			proposition.setFont(UIManager.getDefaults().getFont("TabbedPane.font"));
 			proposition.setPreferredSize(new Dimension(400, 75));
 			proposition.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -166,6 +167,7 @@ public class SolveExercise extends JFrame implements Observer {
 			exoPanel.add(label);
 			
 			proposition = new JTextArea();
+			proposition.setLineWrap(true);
 			proposition.setFont(UIManager.getDefaults().getFont("TabbedPane.font"));
 			proposition.setPreferredSize(new Dimension(150, 20));
 			proposition.setBorder(BorderFactory.createLineBorder(Color.black));

@@ -11,10 +11,9 @@ public class Image implements Serializable {
 	private String filename;
 	private byte[] data;
 	
-	public Image(String filepath){
+	public Image(File file){
 		long start = System.currentTimeMillis();
 		try {
-			File file = new File(filepath);
 			FileInputStream fis = new FileInputStream(file);
 			filename = file.getName();
 	        data = new byte[fis.available()];
@@ -26,16 +25,23 @@ public class Image implements Serializable {
 		System.out.println("Lecture en " + (System.currentTimeMillis() - start)/1000f+" sec");
 	}
 	
-	public void save(String folder){
+	public Image(String filepath){
+		this(new File(filepath));
+	}
+	
+	public String save(String folder){
 		long start = System.currentTimeMillis();
+		String str = "";
 		try {
 			FileOutputStream fos = new FileOutputStream(folder + "/" + filename);
 			fos.write(data);
 			fos.close();
+			str = folder + "/" + filename;
 		} catch (IOException e) {
 			System.err.println("[Erreur] " + e);
 		}
 		System.out.println("Ecriture en " + (System.currentTimeMillis() - start)/1000f+" sec");
+		return str;
 	}
 	
 	public byte[] getImage(){

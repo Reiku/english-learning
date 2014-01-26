@@ -45,41 +45,41 @@ public class AdminHome extends JFrame implements Observer {
 				controller.changeView(new Home(new HomeController(controller.getModel())));
 			} 
 		});
-		backPanel.setPreferredSize(new Dimension(150, 35));
+		backPanel.setPreferredSize(new Dimension(100, 35));
 		backPanel.add(backButton);
 		
 		JPanel userPanel = new JPanel();
 		JLabel userLabel = new JLabel("Login : " + App.user.getLogin());
-		userPanel.setPreferredSize(new Dimension(150, 35));
+		userPanel.setPreferredSize(new Dimension(100, 35));
 		userPanel.add(userLabel);
 		
 		JPanel homePanel = new JPanel();
-		homePanel.setPreferredSize(new Dimension(150, 125));
+		homePanel.setPreferredSize(new Dimension(250, 125));
 		//panHome.setBackground(Color.WHITE);
 		
 		JButton imgButton = new JButton("Ajouter un élève");
-		imgButton.setPreferredSize(new Dimension(125, 25));
+		imgButton.setPreferredSize(new Dimension(200, 25));
 		imgButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
 				controller.changeView(new AddEleve(new AdminController(controller.getModel())));
 			} 
 		});
 		JButton textButton = new JButton("Ajouter un exercice");
-		textButton.setPreferredSize(new Dimension(125, 25));
+		textButton.setPreferredSize(new Dimension(200, 25));
 		textButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
-				
+				controller.changeView(new AddExercise(new AdminController(controller.getModel())));
 			} 
 		});
 		JButton dictButton = new JButton("Supprimer un exercice");
-		dictButton.setPreferredSize(new Dimension(125, 25));
+		dictButton.setPreferredSize(new Dimension(200, 25));
 		dictButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
 				
 			} 
 		});
 		JButton statsButton = new JButton("Voir les résultats");
-		statsButton.setPreferredSize(new Dimension(125, 25));
+		statsButton.setPreferredSize(new Dimension(200, 25));
 		statsButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
 				

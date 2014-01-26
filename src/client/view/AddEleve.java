@@ -85,7 +85,12 @@ public class AddEleve extends JFrame implements Observer {
 		JButton valider = new JButton("Valider");
 		valider.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent ae) {
-				controller.changeView(new AdminHome(new AdminController(controller.getModel())));
+				if(!loginField.getText().equals("") && !passField.getText().equals("")){
+					controller.sendUser(loginField.getText(), passField.getText());
+					loginField.setText("");
+					passField.setText("");
+				}
+				
 			} 
 		});
 		addPanel.add(valider);

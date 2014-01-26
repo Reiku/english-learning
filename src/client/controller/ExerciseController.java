@@ -1,5 +1,7 @@
 package client.controller;
 
+import javax.swing.JOptionPane;
+
 import client.listener.ServerListener;
 
 import common.exercise.Exercise;
@@ -19,6 +21,7 @@ public class ExerciseController extends AppController {
 	
 	public void sendNote(Note note){
 		model.send("saveNote", note);
+		model.notifyObserver("Note : " + note.getNote() + " / 20", "Exercice fini", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }
