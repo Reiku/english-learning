@@ -13,6 +13,8 @@ import client.controller.StatsListController;
 import client.observer.Observable;
 import client.observer.Observer;
 import client.view.AdminHome;
+import client.view.AdminStatsList;
+import client.view.DelExercise;
 import client.view.Home;
 import client.view.List;
 import client.view.StatsList;
@@ -99,6 +101,20 @@ public class ServerListener extends SocketThread implements Observable {
 				adminHome = new AdminHome(new AdminController(this));
 				this.setObserver(adminHome);
 				this.notifyObserver("Exercice ajouté avec succès !", "Ajout d'exercice", JOptionPane.INFORMATION_MESSAGE);
+				break;
+			case "listAllExercises":
+				HashMap<String, ArrayList<Exercise>> allExercises = (HashMap<String, ArrayList<Exercise>>)packet.getData();
+				observer.dispose();
+				DelExercise del = new DelExercise(new AdminController(this, allExercises.get("sens"), allExercises.get("trous"), allExercises.get("dictees")));
+				this.setObserver(del);
+				break;
+			case "delExerciceOk":
+				this.send("getAllExercises");
+				break;
+			case "listAllStats":
+				observer.dispose();
+				AdminStatsList adminStatsList = new AdminStatsList(new AdminController(this, (HashMap<String, ArrayList<Note>>)packet.getData()));
+				this.setObserver(adminStatsList);
 				break;
 		}
 	}

@@ -75,14 +75,14 @@ public class AdminHome extends JFrame implements Observer {
 		dictButton.setPreferredSize(new Dimension(200, 25));
 		dictButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
-				
+				controller.getAllExercises();
 			} 
 		});
 		JButton statsButton = new JButton("Voir les résultats");
 		statsButton.setPreferredSize(new Dimension(200, 25));
 		statsButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
-				
+				controller.getAllStats();
 			} 
 		});
 		

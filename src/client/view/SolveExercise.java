@@ -6,6 +6,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -19,7 +21,6 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import util.ImagePanel;
-
 import client.App;
 import client.controller.ExerciseController;
 import client.listener.ExitListener;
@@ -86,6 +87,20 @@ public class SolveExercise extends JFrame implements Observer {
 		if(controller.getExercise().getClass() == Trous.class){
 			exTrous = (Trous)controller.getExercise();
 			fieldWords = new JTextField[exTrous.words.length];
+			String[] indiceWords = Arrays.copyOf(exTrous.words, exTrous.words.length);
+			Collections.shuffle(Arrays.asList(indiceWords));
+			for(int i = 0 ; i < indiceWords.length ; i++){
+				JLabel mot;
+				if(i < indiceWords.length - 1){
+					mot = new JLabel(indiceWords[i] + " - ");
+				} else {
+					mot = new JLabel(indiceWords[i]);
+				}
+				exoPanel.add(mot);
+			}
+			JPanel panel = new JPanel();
+			panel.setPreferredSize(new Dimension(420, 15));
+			exoPanel.add(panel);
 			for(int i = 0 ; i < exTrous.sentence.length ; i++){
 				JLabel phrase = new JLabel(exTrous.sentence[i]);
 				exoPanel.add(phrase);
@@ -94,7 +109,8 @@ public class SolveExercise extends JFrame implements Observer {
 					exoPanel.add(fieldWords[i]);
 				}
 			}
-			JPanel panel = new JPanel();
+			
+			panel = new JPanel();
 			panel.setPreferredSize(new Dimension(420, 15));
 			exoPanel.add(panel);
 			

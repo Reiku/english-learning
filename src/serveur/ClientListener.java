@@ -75,6 +75,26 @@ public class ClientListener extends SocketThread {
 				if(user.isProf())
 					this.addDictee((Dictee)packet.getData());
 				break;
+			case "getAllExercises":
+				if(user.isProf())
+					this.sendAllExercises();
+				break;
+			case "delSens":
+				if(user.isProf())
+					this.delSens((int[])packet.getData());
+				break;
+			case "delTrous":
+				if(user.isProf())
+					this.delTrous((int[])packet.getData());
+				break;
+			case "delDictee":
+				if(user.isProf())
+					this.delDictee((int[])packet.getData());
+				break;
+			case "getAllStats":
+				if(user.isProf())
+					this.sendAllStats();
+				break;
 			default:
 				this.send("packetError");
 				System.err.println("[Erreur] Packet inconnu : " + packet.getName());
@@ -271,6 +291,110 @@ public class ClientListener extends SocketThread {
         			"VALUES ('" + exercise_id + "', '" + exercise.getPhrase() + "');"
         	);
         	this.send("addDicteeOk");
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+	}
+	
+	private void sendAllExercises(){
+		try {
+			HashMap<String, ArrayList<Exercise>> allExercises = new HashMap<String, ArrayList<Exercise>>();
+			ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+			
+			ResultSet query = db.query("SELECT * FROM trous");
+			while(query.next()){
+				exercises.add(new Trous(query.getInt("exercise_id"), query.getInt("id"), query.getString("texte")));
+			}
+			allExercises.put("trous", exercises);
+			
+			exercises = new ArrayList<Exercise>();
+			query = db.query("SELECT * FROM dictees");
+			while(query.next()){
+				exercises.add(new Dictee(query.getInt("exercise_id"), query.getInt("id"), query.getString("texte")));
+			}
+			allExercises.put("dictees", exercises);
+			
+			exercises = new ArrayList<Exercise>();
+			query = db.query("SELECT * FROM sens");
+			while(query.next()){
+				exercises.add(new Sens(query.getInt("exercise_id"), query.getInt("id"), query.getString("mot"), query.getString("imagepath")));
+			}
+			allExercises.put("sens", exercises);
+			
+			this.send("listAllExercises", allExercises);
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+	}
+	
+	private void delSens(int[] ids){
+		try {
+			db.execute("DELETE FROM exercises WHERE id = " + ids[0]);
+        	db.execute("DELETE FROM sens WHERE id = " + ids[1]);
+        	this.send("delExerciceOk");
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+	}
+	
+	private void delTrous(int[] ids){
+		try {
+			db.execute("DELETE FROM exercises WHERE id = " + ids[0]);
+        	db.execute("DELETE FROM trous WHERE id = " + ids[1]);
+        	this.send("delExerciceOk");
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+	}
+	
+	private void delDictee(int[] ids){
+		try {
+			db.execute("DELETE FROM exercises WHERE id = " + ids[0]);
+        	db.execute("DELETE FROM dictees WHERE id = " + ids[1]);
+        	this.send("delExerciceOk");
+		} catch (SQLException e) {
+			System.err.println("[Erreur] " + e);
+		}
+	}
+	
+	private void sendAllStats(){
+		try {
+			HashMap<String, ArrayList<Note>> stats = new HashMap<String, ArrayList<Note>>();
+			ResultSet query;
+			ArrayList<Note> notes;
+			
+			notes = new ArrayList<Note>();
+			query = db.query(
+					"SELECT login, user_id, sens.id, note, best FROM stats, sens, users " +
+					"WHERE stats.exercise_id = sens.exercise_id AND users.id = stats.user_id ORDER BY login"
+			);
+			
+			while(query.next()){
+				notes.add(new Note(query.getInt("id"), query.getDouble("note"), query.getDouble("best"), query.getString("login")));
+			}
+			stats.put("sens", notes);
+			
+			notes = new ArrayList<Note>();
+			query = db.query(
+					"SELECT login, user_id, trous.id, note, best FROM stats, trous, users " +
+					"WHERE stats.exercise_id = trous.exercise_id AND users.id = stats.user_id ORDER BY login"
+			);
+			while(query.next()){
+				notes.add(new Note(query.getInt("id"), query.getDouble("note"), query.getDouble("best"), query.getString("login")));
+			}
+			stats.put("trous", notes);
+			
+			notes = new ArrayList<Note>();
+			query = db.query(
+					"SELECT login, user_id, dictees.id, note, best FROM stats, dictees, users " +
+					"WHERE stats.exercise_id = dictees.exercise_id AND users.id = stats.user_id ORDER BY login"
+			);
+			while(query.next()){
+				notes.add(new Note(query.getInt("id"), query.getDouble("note"), query.getDouble("best"), query.getString("login")));
+			}
+			stats.put("dictees", notes);
+			
+			this.send("listAllStats", stats);
 		} catch (SQLException e) {
 			System.err.println("[Erreur] " + e);
 		}

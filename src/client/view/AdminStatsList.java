@@ -18,19 +18,18 @@ import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 
 import client.App;
-import client.controller.HomeController;
-import client.controller.StatsListController;
+import client.controller.AdminController;
 import client.listener.ExitListener;
 import client.observer.Observer;
 
 import common.exercise.Note;
 
-public class StatsList extends JFrame implements Observer {
+public class AdminStatsList extends JFrame implements Observer {
 	private static final long serialVersionUID = 1L;
 	private JPanel container = new JPanel();
-	private StatsListController controller;
+	private AdminController controller;
 
-	public StatsList(StatsListController controller){
+	public AdminStatsList(AdminController controller){
 		this.controller = controller;
 		this.setSize(800, 400);
 		this.setTitle("Mes statistiques - English Learning");
@@ -49,7 +48,7 @@ public class StatsList extends JFrame implements Observer {
 		backButton.setHorizontalAlignment(JButton.LEFT);
 		backButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent ae) { 
-				controller.changeView(new Home(new HomeController(controller.getModel())));
+				controller.changeView(new AdminHome(new AdminController(controller.getModel())));
 			} 
 		});
 		backPanel.setPreferredSize(new Dimension(180, 35));
@@ -69,7 +68,7 @@ public class StatsList extends JFrame implements Observer {
 			
 			int i = 0;
 			for(Note note : notes){
-				String noteStr = "Exercice " + note.getExercise_id() + " : " + note.getNote() + " / 20";
+				String noteStr = note.getUsername() + " : Exercice " + note.getExercise_id() + " : " + note.getNote() + " / 20";
 				if(note.getBest() != 0.0){
 					noteStr += " - Meilleur note : " + note.getBest() + " / 20";
 				}
