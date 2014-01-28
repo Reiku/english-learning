@@ -1,3 +1,4 @@
+serverip=127.0.0.1
 serverport=3829
 dbhost=62.210.243.12
 dbname=projet
